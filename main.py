@@ -1,20 +1,23 @@
 import pandas as pd
 from carros import Carros
+from db import connect_postgres
 
-# marca = 'Audi'
-# modelo = 'A6'
+# marca = 'Hyundai'
+# modelo = 'HB20'
 
 carros = Carros()
 # lista = carros.getModelo(marca, modelo)
 lista = carros.getMegaFeirao()
 
-if len(lista) != 0:
+if lista != []:
     df = pd.DataFrame(lista)
     print(df)
 
-    df.to_csv('./dados.csv', encoding='utf-8')
-else:
-    print("Lista vazia.")
+    connect_postgres(lista)
+
+# df.to_csv('./dados.csv', encoding='utf-8')
+
+
 
 
 

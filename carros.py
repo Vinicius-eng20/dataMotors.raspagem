@@ -146,7 +146,8 @@ class Carros:
             qtde_produtos = qtde_items['Count']
             print(qtde_produtos)
 
-            for j in range(1, math.ceil(qtde_produtos/24)):
+            #for j in range(1, math.ceil(qtde_produtos/24)):
+            for j in range(1, 20):
                 data = {
                     'url': f'https://www.webmotors.com.br/carros/estoque/{marca.lower()}/{modelo.lower()}?lkid=1022&estadocidade=estoque&marca1={marca.upper()}&modelo1={modelo.upper()}&autocomplete={marca.lower()}%20{modelo.lower()}&autocompleteTerm={marca.upper()}%20{modelo.upper()}',
                     'actualPage': j,
