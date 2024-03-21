@@ -15,6 +15,7 @@ def json_carro(objeto):
         'Marca': objeto['Specification']['Make']['Value'],
         'Modelo': objeto['Specification']['Model']['Value'],
         'Versão': objeto['Specification']['Version']['Value'],
+        "Tipo": objeto['ListingType'],
         'Preço (R$)': (objeto['Prices']['Price']) / 10,
         'Cor': objeto['Specification']['Color']['Primary'],
         'Transmissão': objeto['Specification']['Transmission'],
@@ -31,8 +32,9 @@ def json_carro(objeto):
 class Carros:
     def getMegaFeirao(self):
         data = {
-            'url': 'https://www.webmotors.com.br/ofertas/feiroes/megafeirao/carros/estoque?feirao=Mega Feirão',
-            'feirao': 'Mega Feirão',
+            #'url': 'https://www.webmotors.com.br/ofertas/feiroes/megafeirao/carros/estoque?feirao=Mega Feirão',
+            #'feirao': 'Mega Feirão',
+            'url': 'https://www.webmotors.com.br/carros/estoque',
             'actualPage': 1,
             'displayPerPage': 24,
             'order': 1,
