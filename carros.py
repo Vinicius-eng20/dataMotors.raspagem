@@ -1,5 +1,6 @@
 from requests import get
-import json, math
+import json
+from time import sleep
 from datetime import date
 
 api = 'https://www.webmotors.com.br/api/search/car?'
@@ -16,11 +17,11 @@ def json_carro(objeto):
         'Modelo': objeto['Specification']['Model']['Value'],
         'Versão': objeto['Specification']['Version']['Value'],
         "Tipo": objeto['ListingType'],
-        'Preço (R$)': (objeto['Prices']['Price']) / 10,
+        'Preço (R$)': (objeto['Prices']['Price']),
         'Cor': objeto['Specification']['Color']['Primary'],
         'Transmissão': objeto['Specification']['Transmission'],
         'Numero de Portas': objeto['Specification']['NumberPorts'],
-        'Quilometragem': (objeto['Specification']['Odometer']) / 10,
+        'Quilometragem': (objeto['Specification']['Odometer']),
         'Cidade': objeto['Seller']['City'],
         'Estado': objeto['Seller']['State'],
         'AnoFab': objeto['Specification']['YearFabrication'],
@@ -30,11 +31,11 @@ def json_carro(objeto):
     }
 
 class Carros:
-    def getMegaFeirao(self):
+    def getCarsInStock(self):
         data = {
             #'url': 'https://www.webmotors.com.br/ofertas/feiroes/megafeirao/carros/estoque?feirao=Mega Feirão',
             #'feirao': 'Mega Feirão',
-            'url': 'https://www.webmotors.com.br/carros/estoque',
+            'url': 'https://www.webmotors.com.br/carros/estoque?lkid=1022',
             'actualPage': 1,
             'displayPerPage': 24,
             'order': 1,
@@ -52,8 +53,9 @@ class Carros:
 
         for j in range(1, 20):
             data = {
-                'url': 'https://www.webmotors.com.br/ofertas/feiroes/megafeirao/carros/estoque?feirao=Mega Feirão',
-                'feirao': 'Mega Feirão',
+                #'url': 'https://www.webmotors.com.br/ofertas/feiroes/megafeirao/carros/estoque?feirao=Mega Feirão',
+                #'feirao': 'Mega Feirão',
+                'url': 'https://www.webmotors.com.br/carros/estoque?lkid=1022',
                 'actualPage': j,
                 'displayPerPage': 24,
                 'order': 1,
@@ -64,118 +66,23 @@ class Carros:
                 'returnUrl': False
             }
             response = get(api, headers=headers, params=data)
+
             print(response)
+            print(f"Page {j}")
+
+            if response.status_code != 200:
+                print("Próximo...")
+                continue
 
             dados = json.loads(response.text)
-
-            print(f"Page {j}")
 
             for i in range(0, 24):
                 produto = dados['SearchResults'][i]
                 lista_carros.append(json_carro(produto))
 
+            sleep(.5)
+
         return lista_carros
-    
-    def getMarca(self, marca):
-        if marca == '': 
-            return [] 
-
-        data = {
-            'url': f'https://www.webmotors.com.br/carros/estoque/{marca.lower()}?estadocidade=estoque&marca1={marca.upper()}&autocomplete={marca.lower()}&autocompleteTerm={marca.upper()}&lkid=1704',
-            #'url': f'https://www.webmotors.com.br/api/search/car?actualPage=1&brand={marca}',
-            'actualPage': 1,
-            'displayPerPage': 24,
-            'order': 1,
-            'showMenu': True,
-            'showCount': True,
-            'showBreadCrumb': True,
-            'testAB': False,
-            'returnUrl': False
-        }
-        try:
-            response = get(api, headers=headers, params=data)
-            response.raise_for_status()
-            qtde_items = json.loads(response.text)
-            qtde_produtos = qtde_items['Count']
-            print(qtde_produtos)
-
-            for j in range(1, 20):
-                data = {
-                    'url': f'https://www.webmotors.com.br/carros/estoque/{marca.lower()}?estadocidade=estoque&marca1={marca.upper()}&autocomplete={marca.lower()}&autocompleteTerm={marca.upper()}&lkid=1704',
-                    'actualPage': j,
-                    'displayPerPage': 24,
-                    'order': 1,
-                    'showMenu': True,
-                    'showCount': True,
-                    'showBreadCrumb': True,
-                    'testAB': False,
-                    'returnUrl': False
-                }
-                response = get(api, headers=headers, params=data)
-                print(response)
-
-                dados = json.loads(response.text)
-
-                print(f"Page {j}")
-
-                for i in range(0, 24):
-                    produto = dados['SearchResults'][i]
-                    lista_carros.append(json_carro(produto))
-
-            return lista_carros
-        except Exception as e:
-            print(f"Erro: {e}")
-
-    def getModelo(self, marca, modelo):
-        if marca == '' or modelo == '':
-            return []
-        
-        data = {
-            'url': f'https://www.webmotors.com.br/carros/estoque/{marca.lower()}/{modelo.lower()}?lkid=1022&estadocidade=estoque&marca1={marca.upper()}&modelo1={modelo.upper()}&autocomplete={marca.lower()}%20{modelo.lower()}&autocompleteTerm={marca.upper()}%20{modelo.upper()}',
-            'actualPage': 1,
-            'displayPerPage': 24,
-            'order': 1,
-            'showMenu': True,
-            'showCount': True,
-            'showBreadCrumb': True,
-            'testAB': False,
-            'returnUrl': False
-        }
-        try:
-            response = get(api, headers=headers, params=data)
-            response.raise_for_status()
-            qtde_items = json.loads(response.text)
-            qtde_produtos = qtde_items['Count']
-            print(qtde_produtos)
-
-            #for j in range(1, math.ceil(qtde_produtos/24)):
-            for j in range(1, 20):
-                data = {
-                    'url': f'https://www.webmotors.com.br/carros/estoque/{marca.lower()}/{modelo.lower()}?lkid=1022&estadocidade=estoque&marca1={marca.upper()}&modelo1={modelo.upper()}&autocomplete={marca.lower()}%20{modelo.lower()}&autocompleteTerm={marca.upper()}%20{modelo.upper()}',
-                    'actualPage': j,
-                    'displayPerPage': 24,
-                    'order': 1,
-                    'showMenu': True,
-                    'showCount': True,
-                    'showBreadCrumb': True,
-                    'testAB': False,
-                    'returnUrl': False
-                }
-                response = get(api, headers=headers, params=data)
-                print(response)
-
-                dados = json.loads(response.text)
-
-                print(f"Page {j}")
-
-                for i in range(0, 24):
-                    produto = dados['SearchResults'][i]
-                    lista_carros.append(json_carro(produto))
-
-            return lista_carros
-
-        except Exception as e:
-            print(f'Erro: {e}')
 
 
 
