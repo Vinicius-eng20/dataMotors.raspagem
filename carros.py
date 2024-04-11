@@ -21,7 +21,7 @@ def json_carro(objeto):
         'Cor': objeto['Specification']['Color']['Primary'],
         'Transmissão': objeto['Specification']['Transmission'],
         'Numero de Portas': objeto['Specification']['NumberPorts'],
-        'Quilometragem': (objeto['Specification']['Odometer']),
+        'Quilometragem': str(objeto['Specification']['Odometer']).replace('.', ','),
         'Cidade': objeto['Seller']['City'],
         'Estado': objeto['Seller']['State'],
         'AnoFab': objeto['Specification']['YearFabrication'],
