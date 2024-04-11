@@ -5,15 +5,13 @@ carros = Carros()
 
 lista = carros.getCarsInStock()
 
-print(lista)
+if len(lista) != 0:
+    df = pd.DataFrame(lista)
+    print(df)
 
-# if len(lista) != 0:
-#     df = pd.DataFrame(lista)
-#     print(df)
-
-#     df.to_csv('./dados.csv', encoding='utf-8')
-# else:
-#     print("Lista vazia. ")
+    df.to_csv('./dados.csv', encoding='utf-8')
+else:
+    print("Lista vazia. ")
 
 
 

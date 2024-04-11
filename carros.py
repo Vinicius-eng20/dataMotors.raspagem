@@ -17,7 +17,7 @@ def json_carro(objeto):
         'Modelo': objeto['Specification']['Model']['Value'],
         'Versão': objeto['Specification']['Version']['Value'],
         "Tipo": objeto['ListingType'],
-        'Preço (R$)': (objeto['Prices']['Price']),
+        'Preço (R$)': str(objeto['Prices']['Price']).replace('.',','),
         'Cor': objeto['Specification']['Color']['Primary'],
         'Transmissão': objeto['Specification']['Transmission'],
         'Numero de Portas': objeto['Specification']['NumberPorts'],
