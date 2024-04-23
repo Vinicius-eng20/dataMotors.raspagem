@@ -13,21 +13,21 @@ lista_carros = []
 
 def json_carro(objeto):
     return {
-        'Marca': objeto['Specification']['Make']['Value'],
-        'Modelo': objeto['Specification']['Model']['Value'],
-        'Versão': objeto['Specification']['Version']['Value'],
-        "Tipo": objeto['ListingType'],
-        'Preço (R$)': str(objeto['Prices']['Price']).replace('.',','),
-        'Cor': objeto['Specification']['Color']['Primary'],
-        'Transmissão': objeto['Specification']['Transmission'],
-        'Numero de Portas': objeto['Specification']['NumberPorts'],
-        'Quilometragem': str(objeto['Specification']['Odometer']).replace('.', ','),
-        'Cidade': objeto['Seller']['City'],
-        'Estado': objeto['Seller']['State'],
-        'AnoFab': objeto['Specification']['YearFabrication'],
-        'AnoModelo': int(objeto['Specification']['YearModel']),
+        'marca': objeto['Specification']['Make']['Value'],
+        'modelo': objeto['Specification']['Model']['Value'],
+        'versao': objeto['Specification']['Version']['Value'],
+        "tipo": objeto['ListingType'],
+        'preco': objeto['Prices']['Price'],
+        'cor': objeto['Specification']['Color']['Primary'],
+        'transmissao': objeto['Specification']['Transmission'],
+        'numPortas': objeto['Specification']['NumberPorts'],
+        'quilometragem': objeto['Specification']['Odometer'],
+        'cidade': objeto['Seller']['City'],
+        'estado': objeto['Seller']['State'],
+        'anoFab': int(objeto['Specification']['YearFabrication']),
+        'anoModelo': int(objeto['Specification']['YearModel']),
         #'Vendedor': objeto['Seller']['FantasyName'],
-        'Data': date.today().strftime("%d/%m/%Y")
+        'data': date.today().strftime("%d/%m/%Y")
     }
 
 class Carros:
